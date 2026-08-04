@@ -28,10 +28,16 @@ export type GamePhase =
 
 export interface GameState {
   phase: GamePhase;
-  /** Full shuffled deck (30 animals) */
+  /**
+   * Mazo completo. Las posiciones hasta `maxIndex` ya están sorteadas y son
+   * definitivas; el resto es solo el conjunto de animales que faltan, sin
+   * ningún orden decidido todavía.
+   */
   deck: Animal[];
   /** Index into deck of the currently shown animal */
   currentIndex: number;
+  /** Posición más alta ya sorteada (para no re-sortear al volver atrás) */
+  maxIndex: number;
   /** Countdown tick: 3 → 2 → 1 */
   countdown: number;
 }

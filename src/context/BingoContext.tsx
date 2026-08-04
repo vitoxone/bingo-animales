@@ -33,8 +33,27 @@ function makeInitialState(): GameState {
     phase: 'idle',
     deck: shuffle(ANIMALS),
     currentIndex: -1,
+    maxIndex: -1,
     countdown: 3,
   };
+}
+
+/**
+ * Saca al azar uno de los animales que aún no han salido y lo coloca en la
+ * posición `at`.
+ *
+ * Es un Fisher-Yates hecho a plazos: el sorteo ocurre en el momento, no al
+ * empezar la partida. Así el orden de los que faltan no existe hasta que toca
+ * (antes, `pendingAnimals` revelaba el futuro exacto) y sigue siendo imposible
+ * que un animal se repita.
+ */
+function drawInto(deck: Animal[], at: number): Animal[] {
+  const pick = at + Math.floor(Math.random() * (deck.length - at));
+  if (pick === at) return deck;
+
+  const next = [...deck];
+  [next[at], next[pick]] = [next[pick], next[at]];
+  return next;
 }
 
 function reducer(state: GameState, action: Action): GameState {
@@ -51,12 +70,18 @@ function reducer(state: GameState, action: Action): GameState {
       return { ...state, countdown: next };
     }
 
-    /** Terminada la cuenta atrás entra la tómbola; el animal aún no cambia */
+    /**
+     * Terminada la cuenta atrás entra la tómbola. Aquí es donde se sortea de
+     * verdad: se elige al azar entre los que faltan, salvo que esa posición ya
+     * se hubiera jugado antes (por haber vuelto atrás con «Anterior»).
+     */
     case 'START_DRAW': {
-      if (state.currentIndex + 1 >= state.deck.length) {
+      const nextIndex = state.currentIndex + 1;
+      if (nextIndex >= state.deck.length) {
         return { ...state, phase: 'finished' };
       }
-      return { ...state, phase: 'drawing', countdown: 0 };
+      const deck = nextIndex > state.maxIndex ? drawInto(state.deck, nextIndex) : state.deck;
+      return { ...state, deck, phase: 'drawing', countdown: 0 };
     }
 
     case 'SHOW_ANIMAL': {
@@ -64,7 +89,12 @@ function reducer(state: GameState, action: Action): GameState {
       if (nextIndex >= state.deck.length) {
         return { ...state, phase: 'finished' };
       }
-      return { ...state, phase: 'showing', currentIndex: nextIndex };
+      return {
+        ...state,
+        phase: 'showing',
+        currentIndex: nextIndex,
+        maxIndex: Math.max(state.maxIndex, nextIndex),
+      };
     }
 
     case 'NEXT_ANIMAL': {
