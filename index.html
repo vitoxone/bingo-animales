@@ -3,10 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <meta name="description" content="Bingo de Animales - Juego educativo para niños" />
     <meta name="theme-color" content="#F3F4FC" />
     <meta name="color-scheme" content="light dark" />
+
+    <!-- Instalable: en iPhone, "Añadir a pantalla de inicio" es la única
+         forma de jugar a pantalla completa (Safari no expone la API). -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Bingo" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
     <title>Bingo de Animales</title>
     <style>
       /* Estilos mínimos previos al bundle: evitan el destello blanco

@@ -4,6 +4,7 @@ import './styles/globals.css';
 import styles from './App.module.css';
 import { SettingsProvider, useSettings } from './context/SettingsContext';
 import { useTheme } from './hooks/useTheme';
+import { useAppHeight } from './hooks/useAppHeight';
 import { Header } from './components/Header/Header';
 import { Home } from './pages/Home/Home';
 import { Game } from './pages/Game/Game';
@@ -53,6 +54,7 @@ function AppShell() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
 
   useTheme(settings.theme);
+  useAppHeight();
 
   function navigate(page: Page) {
     setCurrentPage(page);

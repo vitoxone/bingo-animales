@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import styles from './Board.module.css';
 import { AnimalViewer } from '../AnimalViewer/AnimalViewer';
 import { Countdown } from '../Countdown/Countdown';
+import { LotteryAnimation } from '../LotteryAnimation/LotteryAnimation';
 import { BingoControls } from '../BingoControls/BingoControls';
 import { Sidebar } from '../Sidebar/Sidebar';
 import { ProgressBar } from '../ProgressBar/ProgressBar';
@@ -18,10 +19,12 @@ export function Board() {
     currentAnimal,
     drawnAnimals,
     pendingAnimals,
+    upcomingAnimal,
     progress,
     newGame,
     startOrNext,
     prevAnimal,
+    finishDraw,
     pause,
     resume,
   } = useBingo();
@@ -47,7 +50,8 @@ export function Board() {
     onResume: resume,
     onNewGame: newGame,
     onFullscreen: toggleFullscreen,
-    enabled: state.phase !== 'finished',
+    // Durante el sorteo el teclado no interrumpe: la tómbola manda
+    enabled: state.phase !== 'finished' && state.phase !== 'drawing',
   });
 
   const isIdle = state.phase === 'idle';
@@ -68,6 +72,19 @@ export function Board() {
           >
             <Countdown value={state.countdown} total={3} />
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Tómbola: gira entre la cuenta atrás y la pantalla del animal */}
+      <AnimatePresence>
+        {state.phase === 'drawing' && upcomingAnimal && (
+          <LotteryAnimation
+            key={`draw-${state.currentIndex + 1}`}
+            winner={upcomingAnimal}
+            pool={state.deck}
+            soundEnabled={settings.soundEnabled}
+            onComplete={finishDraw}
+          />
         )}
       </AnimatePresence>
 

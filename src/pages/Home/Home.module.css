@@ -320,6 +320,33 @@
   padding: 2px 7px;
 }
 
+/* ── Aviso para instalar en iOS ─────────────────────────── */
+.installHint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  max-width: 26rem;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  border: 1px dashed var(--border-color);
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  text-align: center;
+  line-height: 1.5;
+}
+
+.installHint svg {
+  color: var(--color-primary);
+}
+
+.installHint strong {
+  color: var(--text-primary);
+  font-weight: var(--weight-bold);
+}
+
 /* ── Créditos ───────────────────────────────────────────── */
 .credits {
   font-size: var(--font-size-xs);

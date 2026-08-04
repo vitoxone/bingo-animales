@@ -21,6 +21,7 @@ export interface Animal {
 export type GamePhase =
   | 'idle'        // Not started
   | 'countdown'   // Showing 3-2-1
+  | 'drawing'     // Tómbola girando hasta revelar el animal
   | 'showing'     // Displaying current animal
   | 'paused'      // User paused
   | 'finished';   // All 30 animals shown

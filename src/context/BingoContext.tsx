@@ -7,7 +7,7 @@ import React, {
   useRef,
   type ReactNode,
 } from 'react';
-import type { Animal, GameState } from '../types';
+import type { Animal, GamePhase, GameState } from '../types';
 import { ANIMALS } from '../data/animals';
 import { shuffle } from '../utils/shuffle';
 import { playCountdownTick, playReveal, playFanfare, resumeAudio } from '../utils/audio';
@@ -16,11 +16,13 @@ import { useSettings } from './SettingsContext';
 // ── State & Actions ───────────────────────────────────────────────────────────
 
 type Action =
+  /** `seconds` viene de los ajustes: la cuenta atrás es configurable */
   | { type: 'NEW_GAME' }
-  | { type: 'START_COUNTDOWN' }
+  | { type: 'START_COUNTDOWN'; seconds: number }
   | { type: 'TICK_COUNTDOWN' }
+  | { type: 'START_DRAW' }
   | { type: 'SHOW_ANIMAL' }
-  | { type: 'NEXT_ANIMAL' }
+  | { type: 'NEXT_ANIMAL'; seconds: number }
   | { type: 'PREV_ANIMAL' }
   | { type: 'PAUSE' }
   | { type: 'RESUME' }
@@ -41,7 +43,7 @@ function reducer(state: GameState, action: Action): GameState {
       return { ...makeInitialState() };
 
     case 'START_COUNTDOWN':
-      return { ...state, phase: 'countdown', countdown: 3 };
+      return { ...state, phase: 'countdown', countdown: action.seconds };
 
     case 'TICK_COUNTDOWN': {
       const next = state.countdown - 1;
@@ -49,12 +51,20 @@ function reducer(state: GameState, action: Action): GameState {
       return { ...state, countdown: next };
     }
 
+    /** Terminada la cuenta atrás entra la tómbola; el animal aún no cambia */
+    case 'START_DRAW': {
+      if (state.currentIndex + 1 >= state.deck.length) {
+        return { ...state, phase: 'finished' };
+      }
+      return { ...state, phase: 'drawing', countdown: 0 };
+    }
+
     case 'SHOW_ANIMAL': {
       const nextIndex = state.currentIndex + 1;
       if (nextIndex >= state.deck.length) {
         return { ...state, phase: 'finished' };
       }
-      return { ...state, phase: 'showing', currentIndex: nextIndex, countdown: 3 };
+      return { ...state, phase: 'showing', currentIndex: nextIndex };
     }
 
     case 'NEXT_ANIMAL': {
@@ -62,7 +72,12 @@ function reducer(state: GameState, action: Action): GameState {
       if (nextIdx >= state.deck.length) {
         return { ...state, phase: 'finished' };
       }
-      return { ...state, phase: 'countdown', currentIndex: state.currentIndex, countdown: 3 };
+      return {
+        ...state,
+        phase: 'countdown',
+        currentIndex: state.currentIndex,
+        countdown: action.seconds,
+      };
     }
 
     case 'PREV_ANIMAL': {
@@ -95,6 +110,8 @@ interface BingoContextValue {
   drawnAnimals: Animal[];
   /** Animals not yet shown */
   pendingAnimals: Animal[];
+  /** Animal que la tómbola está sorteando (solo durante la fase 'drawing') */
+  upcomingAnimal: Animal | null;
   /** Progress 0–1 */
   progress: number;
 
@@ -104,6 +121,8 @@ interface BingoContextValue {
   prevAnimal: () => void;
   pause: () => void;
   resume: () => void;
+  /** La tómbola terminó: se muestra el animal ganador */
+  finishDraw: () => void;
 }
 
 const BingoContext = createContext<BingoContextValue | null>(null);
@@ -119,6 +138,7 @@ export function BingoProvider({ children }: { children: ReactNode }) {
   /** Evitan repetir un sonido cuando el efecto se re-ejecuta sin que el juego avance */
   const lastTickRef = useRef<number | null>(null);
   const lastRevealRef = useRef<number | null>(null);
+  const prevPhaseRef = useRef<GamePhase>('idle');
 
   const clearTimers = useCallback(() => {
     if (autoTimerRef.current) clearTimeout(autoTimerRef.current);
@@ -151,11 +171,11 @@ export function BingoProvider({ children }: { children: ReactNode }) {
     playCountdownTick(state.countdown, settings.soundEnabled);
   }, [state.phase, state.countdown, settings.soundEnabled]);
 
-  // When countdown hits 0, show the animal
+  // Al llegar a cero entra la tómbola (ella decide cuándo mostrar el animal)
   useEffect(() => {
     if (state.phase === 'countdown' && state.countdown === 0) {
       clearTimers();
-      dispatch({ type: 'SHOW_ANIMAL' });
+      dispatch({ type: 'START_DRAW' });
     }
   }, [state.phase, state.countdown, clearTimers]);
 
@@ -165,7 +185,7 @@ export function BingoProvider({ children }: { children: ReactNode }) {
 
     clearTimers();
     autoTimerRef.current = setTimeout(() => {
-      dispatch({ type: 'NEXT_ANIMAL' });
+      dispatch({ type: 'NEXT_ANIMAL', seconds: settings.countdownSeconds });
     }, settings.showingSeconds * 1000);
 
     return () => clearTimers();
@@ -174,18 +194,23 @@ export function BingoProvider({ children }: { children: ReactNode }) {
     state.currentIndex,
     settings.mode,
     settings.showingSeconds,
+    settings.countdownSeconds,
     settings.soundEnabled,
     clearTimers,
   ]);
 
   // Sonido de aparición del animal (una sola vez por animal, en ambos modos:
-  // reanudar tras una pausa no vuelve a dispararlo)
+  // reanudar tras una pausa no vuelve a dispararlo).
+  // Si venimos de la tómbola no suena: la campana del sorteo ya cumplió ese papel.
   useEffect(() => {
+    const cameFromDraw = prevPhaseRef.current === 'drawing';
+    prevPhaseRef.current = state.phase;
+
     if (state.phase !== 'showing') return;
     if (lastRevealRef.current === state.currentIndex) return;
 
     lastRevealRef.current = state.currentIndex;
-    playReveal(settings.soundEnabled);
+    if (!cameFromDraw) playReveal(settings.soundEnabled);
   }, [state.phase, state.currentIndex, settings.soundEnabled]);
 
   // Fanfare on finish
@@ -210,6 +235,9 @@ export function BingoProvider({ children }: { children: ReactNode }) {
   const pendingAnimals =
     state.currentIndex >= 0 ? state.deck.slice(state.currentIndex + 1) : state.deck;
 
+  const upcomingAnimal =
+    state.currentIndex + 1 < state.deck.length ? state.deck[state.currentIndex + 1] : null;
+
   const progress = state.deck.length > 0 ? drawnAnimals.length / state.deck.length : 0;
 
   // ── Public actions ───────────────────────────────────────
@@ -226,11 +254,15 @@ export function BingoProvider({ children }: { children: ReactNode }) {
     void resumeAudio();
 
     if (state.phase === 'idle') {
-      dispatch({ type: 'START_COUNTDOWN' });
+      dispatch({ type: 'START_COUNTDOWN', seconds: settings.countdownSeconds });
     } else if (state.phase === 'showing' || state.phase === 'paused') {
-      dispatch({ type: 'NEXT_ANIMAL' });
+      dispatch({ type: 'NEXT_ANIMAL', seconds: settings.countdownSeconds });
     }
-  }, [state.phase]);
+  }, [state.phase, settings.countdownSeconds]);
+
+  const finishDraw = useCallback(() => {
+    dispatch({ type: 'SHOW_ANIMAL' });
+  }, []);
 
   const prevAnimal = useCallback(() => {
     if (state.currentIndex > 0) {
@@ -255,10 +287,12 @@ export function BingoProvider({ children }: { children: ReactNode }) {
         currentAnimal,
         drawnAnimals,
         pendingAnimals,
+        upcomingAnimal,
         progress,
         newGame,
         startOrNext,
         prevAnimal,
+        finishDraw,
         pause,
         resume,
       }}

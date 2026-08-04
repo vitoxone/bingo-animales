@@ -61,6 +61,7 @@ export function BingoControls({
   const isShowing = phase === 'showing';
   const isPaused = phase === 'paused';
   const isCountdown = phase === 'countdown';
+  const isDrawing = phase === 'drawing';
 
   /** Un único botón primario que cambia de significado según la fase. */
   const primary: { icon: IconName; label: string; onClick?: () => void; title: string } = isIdle
@@ -69,9 +70,16 @@ export function BingoControls({
       ? { icon: 'play', label: 'Reanudar', onClick: onResume, title: 'Reanudar (r)' }
       : isCountdown
         ? { icon: 'clock', label: 'Preparando…', title: 'Preparando el siguiente animal' }
-        : isShowing && mode === 'manual'
-          ? { icon: 'next', label: 'Siguiente', onClick: onNext, title: 'Siguiente animal (→ / Enter)' }
-          : { icon: 'pause', label: 'Automático', title: 'Avance automático en curso' };
+        : isDrawing
+          ? { icon: 'sparkle', label: 'Sorteando…', title: 'La tómbola está sorteando' }
+          : isShowing && mode === 'manual'
+            ? {
+                icon: 'next',
+                label: 'Siguiente',
+                onClick: onNext,
+                title: 'Siguiente animal (→ / Enter)',
+              }
+            : { icon: 'pause', label: 'Automático', title: 'Avance automático en curso' };
 
   return (
     <div className={styles.wrapper}>

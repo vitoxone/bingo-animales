@@ -211,17 +211,101 @@ export function playCountdownTick(step: number, enabled: boolean): void {
     const now = a.ctx.currentTime;
     const freq = TICK_NOTES[step] ?? 440;
 
-    mallet(a, freq, now, 0.3, 0.42);
-    // Pulso grave que marca el tiempo, como un tambor lejano
+    // Golpe de tambor: parche grave con barrido + zumbido del bordón
     tone(a, {
-      freq: 110,
+      freq: 190,
       start: now,
-      duration: 0.22,
+      duration: 0.3,
       type: 'sine',
-      gain: 0.22,
-      sweepTo: 55,
-      send: 0.1,
+      gain: 0.34,
+      sweepTo: 62,
+      send: 0.12,
     });
+    noise(a, {
+      start: now,
+      duration: 0.16,
+      gain: 0.16,
+      frequency: 1800,
+      Q: 0.5,
+      send: 0.25,
+    });
+
+    // Nota que da el tono de la cuenta atrás, cada vez más aguda
+    mallet(a, freq, now + 0.01, 0.24, 0.4);
+  } catch {
+    // Audio no disponible
+  }
+}
+
+/**
+ * Ruleta de la tómbola: un clic por cambio de animal.
+ *
+ * Recibe los mismos tiempos que usa la animación (en ms desde ahora), así que
+ * el sonido y la imagen desaceleran exactamente a la vez. Se programa de una
+ * sola vez en el reloj del AudioContext: no depende del hilo de JS ni sufre
+ * los tirones del render.
+ */
+export function playSpinTicks(offsetsMs: number[], enabled: boolean): void {
+  if (!enabled || offsetsMs.length === 0) return;
+  const a = getAudio();
+  if (!a) return;
+
+  try {
+    const now = a.ctx.currentTime;
+    const last = offsetsMs.length - 1;
+
+    offsetsMs.forEach((ms, i) => {
+      const at = now + ms / 1000;
+      // Al desacelerar, cada clic suena un poco más grave y marcado
+      const progress = i / last;
+      tone(a, {
+        freq: 2100 - progress * 900,
+        start: at,
+        duration: 0.05 + progress * 0.05,
+        type: 'triangle',
+        gain: 0.1 + progress * 0.08,
+        attack: 0.002,
+        send: 0.18,
+      });
+      noise(a, {
+        start: at,
+        duration: 0.02,
+        gain: 0.06,
+        frequency: 3200,
+        Q: 1.2,
+        send: 0.15,
+      });
+    });
+  } catch {
+    // Audio no disponible
+  }
+}
+
+/** Campana del animal ganador: golpe brillante con cola larga. */
+export function playWinChime(enabled: boolean): void {
+  if (!enabled) return;
+  const a = getAudio();
+  if (!a) return;
+
+  try {
+    const now = a.ctx.currentTime;
+
+    // Parciales inarmónicos: es lo que hace que suene a campana y no a flauta
+    const partials: [number, number, number][] = [
+      [880, 0.26, 2.4],
+      [1320, 0.14, 1.9],
+      [1760, 0.1, 1.5],
+      [2640, 0.05, 1.1],
+      [3520, 0.03, 0.8],
+    ];
+
+    partials.forEach(([freq, gain, duration]) => {
+      tone(a, { freq, start: now, duration, type: 'sine', gain, attack: 0.003, send: 0.65 });
+    });
+
+    // Golpe inicial y refuerzo grave
+    noise(a, { start: now, duration: 0.06, gain: 0.12, frequency: 5200, Q: 0.8, send: 0.4 });
+    tone(a, { freq: 440, start: now, duration: 1.6, type: 'sine', gain: 0.12, send: 0.5 });
   } catch {
     // Audio no disponible
   }

@@ -1,0 +1,21 @@
+{
+  "name": "Bingo de Animales",
+  "short_name": "Bingo",
+  "description": "Juego educativo de bingo con 30 animales, para jugar en casa, en el aula o en la tele.",
+  "lang": "es",
+  "start_url": "/",
+  "scope": "/",
+  "display": "fullscreen",
+  "display_override": ["fullscreen", "standalone"],
+  "orientation": "any",
+  "background_color": "#F3F4FC",
+  "theme_color": "#F3F4FC",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

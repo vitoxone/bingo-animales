@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import styles from './Home.module.css';
 import { ANIMALS } from '../../data/animals';
 import { Icon } from '../../components/Icon/Icon';
+import { isFullscreenSupported } from '../../utils/fullscreen';
 import type { Page } from '../../types';
 
 interface HomeProps {
@@ -25,6 +26,10 @@ const fade = {
 };
 
 export function Home({ onNavigate }: HomeProps) {
+  // Safari de iPhone no expone la Fullscreen API; ahí la pantalla completa
+  // solo se consigue instalando la web en la pantalla de inicio.
+  const canFullscreen = isFullscreenSupported();
+
   return (
     <main className={styles.page}>
       {/* Hero */}
@@ -133,6 +138,14 @@ export function Home({ onNavigate }: HomeProps) {
           <kbd>F</kbd> Pantalla completa
         </span>
       </div>
+
+      {!canFullscreen && (
+        <p className={styles.installHint}>
+          <Icon name="expand" size={15} />
+          Para jugar a pantalla completa: <strong>Compartir</strong> →{' '}
+          <strong>Añadir a pantalla de inicio</strong>
+        </p>
+      )}
 
       {/* Atribución exigida por la licencia CC BY-SA 4.0 de OpenMoji */}
       <p className={styles.credits}>
