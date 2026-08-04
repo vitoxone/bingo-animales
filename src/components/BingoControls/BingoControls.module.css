@@ -1,0 +1,221 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-6);
+  padding-bottom: max(var(--space-4), env(safe-area-inset-bottom));
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+/* ── Acción primaria ────────────────────────────────────── */
+.primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  height: 60px;
+  /* Ancho estable: el botón cambia de texto según la fase y
+     sin esto los botones vecinos saltaban de sitio. */
+  min-width: 15rem;
+  padding: 0 var(--space-8);
+  border-radius: var(--radius-full);
+  background: var(--gradient-primary);
+  color: #fff;
+  font-size: var(--font-size-md);
+  font-weight: var(--weight-black);
+  letter-spacing: var(--tracking-tight);
+  box-shadow: var(--shadow-primary);
+}
+
+@media (hover: hover) {
+  .primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 32px rgba(108, 99, 255, 0.4);
+  }
+}
+
+.primary:disabled {
+  background: var(--bg-sunken);
+  color: var(--text-muted);
+  box-shadow: none;
+  opacity: 1;
+}
+
+/* ── Acciones secundarias (icono + etiqueta) ────────────── */
+.action {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  width: 4.5rem;
+}
+
+.actionIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-full);
+  background: var(--bg-panel);
+  border: var(--border-width) solid var(--border-color);
+  color: var(--text-secondary);
+  transition: inherit;
+}
+
+.actionLabel {
+  font-size: var(--font-size-xs);
+  font-weight: var(--weight-bold);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+@media (hover: hover) {
+  .action:hover:not(:disabled) .actionIcon {
+    background: var(--color-primary-soft);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    transform: translateY(-2px);
+  }
+  .action:hover:not(:disabled) .actionLabel {
+    color: var(--color-primary);
+  }
+}
+
+.action:focus-visible {
+  border-radius: var(--radius-md);
+}
+
+/* Variantes semánticas */
+.warning .actionIcon {
+  color: var(--color-warning-text);
+  border-color: var(--color-warning);
+  background: var(--color-warning-soft);
+}
+
+@media (hover: hover) {
+  .warning:hover .actionIcon {
+    background: var(--color-warning);
+    border-color: var(--color-warning);
+    color: #fff;
+  }
+  .warning:hover .actionLabel {
+    color: var(--color-warning-text);
+  }
+}
+
+.danger .actionIcon {
+  color: var(--color-accent);
+  border-color: var(--color-accent-light);
+  background: var(--color-accent-soft);
+}
+
+@media (hover: hover) {
+  .danger:hover .actionIcon {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: #fff;
+  }
+  .danger:hover .actionLabel {
+    color: var(--color-accent);
+  }
+}
+
+/* ── Atajos de teclado ──────────────────────────────────── */
+.hints {
+  display: flex;
+  gap: var(--space-2);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  font-weight: var(--weight-medium);
+}
+
+.hint kbd {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: var(--weight-bold);
+  color: var(--text-secondary);
+  background: var(--bg-panel);
+  border: 1px solid var(--border-color);
+  border-bottom-width: 2px;
+  border-radius: var(--radius-xs);
+  padding: 1px 6px;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 720px) {
+  .wrapper {
+    padding: var(--space-3) var(--space-3);
+    padding-bottom: max(var(--space-3), env(safe-area-inset-bottom));
+  }
+  .row {
+    gap: var(--space-2);
+  }
+  .primary {
+    min-width: 11rem;
+    height: 56px;
+    padding: 0 var(--space-5);
+    font-size: var(--font-size-base);
+    order: -1;
+    width: 100%;
+  }
+  .action {
+    width: 4rem;
+  }
+  .actionIcon {
+    width: 48px;
+    height: 48px;
+  }
+  .hints {
+    display: none;
+  }
+}
+
+/* En pantallas bajas la botonera cede altura al animal */
+@media (max-height: 760px) {
+  .wrapper {
+    padding-block: var(--space-2);
+    gap: var(--space-2);
+  }
+  .primary {
+    height: 52px;
+  }
+  .actionIcon {
+    width: 46px;
+    height: 46px;
+  }
+  .action {
+    gap: 3px;
+  }
+}
+
+@media (max-height: 640px) {
+  .hints {
+    display: none;
+  }
+  .actionLabel {
+    display: none;
+  }
+}

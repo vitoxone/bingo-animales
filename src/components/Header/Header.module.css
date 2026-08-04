@@ -1,0 +1,176 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-6);
+  padding-top: max(var(--space-3), env(safe-area-inset-top));
+  background: var(--bg-glass);
+  backdrop-filter: saturate(180%) blur(16px);
+  -webkit-backdrop-filter: saturate(180%) blur(16px);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-panel);
+  flex-shrink: 0;
+}
+
+/* Sin backdrop-filter (TVs antiguas) el glass sería ilegible */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .header {
+    background: var(--bg-card);
+  }
+}
+
+/* ── Logo ───────────────────────────────────────────────── */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-1);
+  border-radius: var(--radius-md);
+  min-width: 0;
+}
+
+.logoIcon {
+  width: 42px;
+  height: 42px;
+  background: var(--gradient-brand);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  line-height: 1;
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+  transition: transform var(--transition-slow);
+}
+
+@media (hover: hover) {
+  .logo:hover .logoIcon {
+    transform: rotate(-8deg) scale(1.06);
+  }
+}
+
+.logoText {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+  min-width: 0;
+  text-align: left;
+}
+
+.logoTitle {
+  font-size: var(--font-size-md);
+  font-weight: var(--weight-black);
+  color: var(--text-primary);
+  letter-spacing: var(--tracking-tight);
+  white-space: nowrap;
+}
+
+.logoSubtitle {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ── Navegación (segmented control) ─────────────────────── */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  background: var(--bg-sunken);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-full);
+}
+
+.navBtn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-4);
+  height: 40px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: var(--weight-bold);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.navBtnLabel,
+.navBtnIcon {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+}
+
+@media (hover: hover) {
+  .navBtn:hover {
+    color: var(--text-primary);
+  }
+}
+
+.navBtn.active {
+  color: var(--color-primary);
+}
+
+/* Píldora que viaja entre pestañas (layoutId de Framer Motion) */
+.navPill {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-full);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+  z-index: 0;
+}
+
+/* ── Acciones ───────────────────────────────────────────── */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* En pantallas bajas cada píxel de alto es para el animal */
+@media (max-height: 760px) {
+  .header {
+    padding-block: var(--space-2);
+  }
+  .logoIcon {
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+  }
+  .navBtn,
+  .nav {
+    height: 38px;
+  }
+  .navBtn {
+    height: 34px;
+  }
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 720px) {
+  .header {
+    padding: var(--space-2) var(--space-3);
+  }
+  .logoText {
+    display: none;
+  }
+  .navBtnLabel {
+    display: none;
+  }
+  .navBtn {
+    padding: 0 var(--space-3);
+    min-width: 44px;
+    justify-content: center;
+  }
+}

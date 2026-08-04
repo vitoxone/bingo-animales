@@ -1,0 +1,85 @@
+.cardOuter {
+  position: relative;
+}
+
+.card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-xs);
+  border: 2px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-2);
+  gap: var(--space-1);
+  transition: transform var(--transition-base), box-shadow var(--transition-base),
+    opacity var(--transition-base);
+}
+
+@media (hover: hover) {
+  .card:hover {
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: var(--shadow-md);
+    z-index: 1;
+  }
+}
+
+.svgWrapper {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.svgWrapper svg {
+  width: 100%;
+  height: 100%;
+}
+
+.name {
+  font-size: var(--font-size-xs);
+  font-weight: var(--weight-bold);
+  color: var(--text-secondary);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+/* ── Estado "ya salió" ──────────────────────────────────────
+   Antes se aplicaba grayscale + opacity 0.5 y el animal quedaba
+   irreconocible. Ahora se atenúa apenas y la marca de verificación
+   es la que comunica el estado. */
+.drawn {
+  opacity: 0.72;
+  border-color: var(--border-color);
+  background: var(--bg-panel);
+}
+
+.drawn .svgWrapper {
+  filter: saturate(0.75);
+}
+
+.drawnBadge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 5px;
+  background: var(--color-success);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 11px;
+  font-weight: var(--weight-black);
+  font-variant-numeric: tabular-nums;
+  box-shadow: 0 0 0 2px var(--bg-panel);
+}

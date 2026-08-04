@@ -1,0 +1,29 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tap-target);
+  height: var(--tap-target);
+  border-radius: var(--radius-md);
+  background: var(--bg-panel);
+  border: var(--border-width) solid var(--border-color);
+  color: var(--text-secondary);
+  position: relative;
+  overflow: hidden;
+}
+
+.icon {
+  display: flex;
+}
+
+@media (hover: hover) {
+  .btn:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    background: var(--color-primary-soft);
+  }
+}
+
+.btn:focus-visible {
+  color: var(--color-primary);
+}

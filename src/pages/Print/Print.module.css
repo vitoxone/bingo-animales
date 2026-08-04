@@ -1,0 +1,10 @@
+.page {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(var(--space-5), 4vh, var(--space-10)) var(--space-5);
+  padding-bottom: max(var(--space-8), env(safe-area-inset-bottom));
+  background: var(--bg-app);
+}

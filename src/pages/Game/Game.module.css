@@ -1,0 +1,129 @@
+/* La altura ya no se calcula con calc(100vh - altura-del-header):
+   ese número dejaba de ser cierto en cuanto el header cambiaba de alto
+   (font-size sube a 20px en pantallas ≥1920px). Ahora es flex puro. */
+.page {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg-app);
+  position: relative;
+}
+
+/* ── Pantalla final ─────────────────────────────────────── */
+.finishedOverlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-5);
+  z-index: var(--z-modal);
+  background: linear-gradient(160deg, var(--violet-600) 0%, var(--violet-500) 45%, var(--coral-500) 100%);
+  text-align: center;
+  padding: var(--space-8);
+}
+
+/* Viñeta para que el texto no compita con el confeti */
+.finishedOverlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 30%, rgba(0, 0, 0, 0.28) 100%);
+  pointer-events: none;
+}
+
+.finishedContent {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  max-width: 40rem;
+}
+
+.finishedTitle {
+  font-size: clamp(2.25rem, 9vw, 4.5rem);
+  font-weight: var(--weight-black);
+  color: #fff;
+  text-shadow: 0 6px 30px rgba(0, 0, 0, 0.35);
+  line-height: 1;
+}
+
+.finishedSubtitle {
+  font-size: var(--font-size-lg);
+  color: rgba(255, 255, 255, 0.92);
+  max-width: 32rem;
+  line-height: 1.5;
+}
+
+.finishedStats {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  min-width: 7rem;
+}
+
+.statValue {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--weight-black);
+  color: #fff;
+  line-height: 1;
+}
+
+.statLabel {
+  font-size: var(--font-size-xs);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.finishedBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-10);
+  background: #fff;
+  color: var(--violet-600);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-lg);
+  font-weight: var(--weight-black);
+  box-shadow: var(--shadow-xl);
+  min-height: 64px;
+}
+
+@media (hover: hover) {
+  .finishedBtn:hover {
+    transform: scale(1.04);
+    box-shadow: 0 0 44px rgba(255, 255, 255, 0.45), var(--shadow-xl);
+  }
+}
+
+.finishedBtn:focus-visible {
+  outline-color: #fff;
+  box-shadow: 0 0 0 7px rgba(0, 0, 0, 0.35);
+}
+
+.confettiContainer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: calc(var(--z-modal) - 1);
+}

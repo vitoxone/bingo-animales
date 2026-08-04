@@ -1,0 +1,219 @@
+@import './variables.css';
+
+/* ============================================================
+   Reset y estilos base
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  /* Evita el flash blanco al recargar en tema oscuro */
+  background: var(--bg-app);
+}
+
+body {
+  font-family: var(--font-family);
+  background: var(--bg-app);
+  color: var(--text-primary);
+  line-height: 1.5;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  overscroll-behavior-y: none;
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  /* Sin selección de texto durante el juego */
+  -webkit-user-select: none;
+  user-select: none;
+  transition: background-color var(--transition-base), color var(--transition-base);
+}
+
+/* Aura de marca detrás de toda la app (no captura eventos) */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: var(--bg-app-tint);
+  pointer-events: none;
+  z-index: 0;
+}
+
+input,
+textarea,
+select {
+  -webkit-user-select: auto;
+  user-select: auto;
+}
+
+/* Altura REAL, no mínima: cada página gestiona su propio scroll interno.
+   Con `min-height` los hijos flex podían crecer sin límite y el
+   `overflow: hidden` del tablero no recortaba nada (la lista de animales
+   estiraba la página entera). */
+#root {
+  position: relative;
+  z-index: var(--z-base);
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Foco: doble anillo, legible sobre cualquier fondo ──────
+   Crítico para navegación con control remoto en Smart TV.
+   ─────────────────────────────────────────────────────────── */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: var(--ring-width) solid var(--ring-color);
+  outline-offset: var(--ring-offset);
+  box-shadow: 0 0 0 calc(var(--ring-offset) + var(--ring-width) + 1px) var(--ring-contrast);
+  border-radius: var(--radius-sm);
+}
+
+/* ── Tipografía base ───────────────────────────────────────── */
+h1,
+h2,
+h3 {
+  letter-spacing: var(--tracking-tight);
+  line-height: 1.15;
+  font-weight: var(--weight-black);
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* ── Scrollbars (más anchas: dedo y control remoto) ────────── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border: 3px solid transparent;
+  background-clip: content-box;
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-light);
+  background-clip: content-box;
+}
+
+/* ── Base de botones ───────────────────────────────────────── */
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  transition: transform var(--transition-fast), box-shadow var(--transition-base),
+    background-color var(--transition-base), border-color var(--transition-base),
+    color var(--transition-base);
+}
+
+button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+/* Los efectos hover solo existen donde hay puntero real:
+   en táctil y Smart TV se quedaban "pegados" tras el toque. */
+@media (hover: none) {
+  *:hover {
+    transform: none !important;
+  }
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ── Utilidades ────────────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Pantallas grandes / Smart TV ──────────────────────────── */
+@media screen and (min-width: 1280px) {
+  html {
+    font-size: 17px;
+  }
+}
+@media screen and (min-width: 1920px) {
+  html {
+    font-size: 20px;
+  }
+  :root {
+    /* Foco más grueso: se mira a 3 metros de distancia */
+    --ring-width: 4px;
+    --ring-offset: 4px;
+  }
+}
+
+/* ── Menos movimiento ──────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Más contraste ─────────────────────────────────────────── */
+@media (prefers-contrast: more) {
+  :root {
+    --border-color: var(--border-strong);
+    --text-muted: var(--text-secondary);
+    --border-width: 3px;
+  }
+}

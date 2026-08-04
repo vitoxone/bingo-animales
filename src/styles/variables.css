@@ -1,0 +1,284 @@
+/* ============================================================
+   Design Tokens – Bingo de Animales
+   ------------------------------------------------------------
+   Un solo lugar para color, tipografía, espacio, elevación y
+   movimiento. Los componentes NUNCA deben hardcodear colores:
+   si falta un token, se agrega aquí.
+
+   Tema: `data-theme="light" | "dark"` en <html> manda siempre.
+   Sin ese atributo se sigue la preferencia del sistema.
+   ============================================================ */
+
+:root {
+  /* ── Escalas de marca ──────────────────────────────────── */
+  --violet-50:  #F2F1FF;
+  --violet-100: #E6E3FF;
+  --violet-200: #CBC5FF;
+  --violet-300: #ABA2FF;
+  --violet-400: #8B80FF;
+  --violet-500: #6C63FF;
+  --violet-600: #564CE8;
+  --violet-700: #443ABC;
+  --violet-800: #342D8F;
+  --violet-900: #241F63;
+
+  --coral-100: #FFE7E7;
+  --coral-300: #FFA8A8;
+  --coral-400: #FF8787;
+  --coral-500: #FF6B6B;
+  --coral-600: #ED4E4E;
+  --coral-700: #C13A3A;
+
+  --mint-100: #DCF7EA;
+  --mint-500: #17A673;
+  --mint-600: #0E8659;
+  --mint-700: #0A6644;
+
+  --amber-100: #FFF2D6;
+  --amber-500: #F0A020;
+  --amber-600: #C97C09;
+  --amber-700: #8F5806;
+
+  --sky-500: #2E86E0;
+
+  /* ── Roles semánticos ──────────────────────────────────── */
+  --color-primary:       var(--violet-500);
+  --color-primary-hover: var(--violet-600);
+  --color-primary-dark:  var(--violet-700);
+  --color-primary-light: var(--violet-300);
+  --color-primary-soft:  var(--violet-50);
+  --color-on-primary:    #FFFFFF;
+
+  --color-accent:        var(--coral-500);
+  --color-accent-hover:  var(--coral-600);
+  --color-accent-light:  var(--coral-300);
+  --color-accent-soft:   var(--coral-100);
+
+  --color-success:      var(--mint-500);
+  --color-success-text: var(--mint-600);
+  --color-success-soft: var(--mint-100);
+
+  --color-warning:      var(--amber-500);
+  --color-warning-text: var(--amber-600);
+  --color-warning-soft: var(--amber-100);
+
+  --color-info: var(--sky-500);
+
+  /* ── Superficies ───────────────────────────────────────── */
+  --bg-app:      #F3F4FC;
+  --bg-app-tint: radial-gradient(
+      1200px 600px at 15% -10%, rgba(108, 99, 255, 0.14), transparent 60%
+    ),
+    radial-gradient(900px 500px at 100% 0%, rgba(255, 107, 107, 0.12), transparent 55%);
+  --bg-card:  #FFFFFF;
+  --bg-panel: #F7F8FE;
+  --bg-sunken: #EDEFFA;
+  --bg-overlay: rgba(16, 16, 34, 0.55);
+  --bg-glass: rgba(255, 255, 255, 0.78);
+
+  /* ── Texto (todos ≥ 4.5:1 sobre --bg-card) ─────────────── */
+  --text-primary:   #14142B;
+  --text-secondary: #4B4E6D;
+  --text-muted:     #6B6E93;
+  --text-on-dark:   #FFFFFF;
+  --text-white:     #FFFFFF;
+
+  /* ── Bordes ────────────────────────────────────────────── */
+  --border-color:  #E3E6F5;
+  --border-strong: #C9CEE9;
+  --border-width:  2px;
+
+  /* ── Radios ────────────────────────────────────────────── */
+  --radius-xs:   6px;
+  --radius-sm:   10px;
+  --radius-md:   16px;
+  --radius-lg:   22px;
+  --radius-xl:   30px;
+  --radius-2xl:  40px;
+  --radius-full: 9999px;
+  --border-radius: var(--radius-lg); /* alias heredado */
+
+  /* ── Elevación (sombra neutra + tinte de marca) ────────── */
+  --shadow-xs: 0 1px 2px rgba(20, 20, 43, 0.06);
+  --shadow-sm: 0 2px 6px rgba(20, 20, 43, 0.06), 0 1px 2px rgba(108, 99, 255, 0.06);
+  --shadow-md: 0 6px 16px rgba(20, 20, 43, 0.08), 0 2px 6px rgba(108, 99, 255, 0.08);
+  --shadow-lg: 0 14px 34px rgba(20, 20, 43, 0.10), 0 4px 12px rgba(108, 99, 255, 0.10);
+  --shadow-xl: 0 28px 64px rgba(20, 20, 43, 0.14), 0 8px 20px rgba(108, 99, 255, 0.12);
+  --shadow-primary: 0 10px 26px rgba(108, 99, 255, 0.36);
+  --shadow-inset: inset 0 2px 4px rgba(20, 20, 43, 0.08);
+
+  /* ── Gradientes ────────────────────────────────────────── */
+  --gradient-brand: linear-gradient(135deg, var(--violet-500), var(--coral-500));
+  --gradient-primary: linear-gradient(135deg, var(--violet-400), var(--violet-600));
+  --gradient-hero: linear-gradient(165deg, #F4F5FE 0%, #FDEEF8 48%, #EAF6FF 100%);
+  --gradient-stage: radial-gradient(
+    120% 90% at 50% 0%,
+    color-mix(in srgb, var(--animal-color, var(--color-primary)) 16%, transparent) 0%,
+    transparent 70%
+  );
+
+  /* ── Foco (visible sobre claro y oscuro, clave en Smart TV) */
+  --ring-color: var(--violet-500);
+  --ring-contrast: #FFFFFF;
+  --ring-width: 3px;
+  --ring-offset: 3px;
+
+  /* ── Tipografía ────────────────────────────────────────── */
+  --font-family: 'Nunito', ui-rounded, 'SF Pro Rounded', 'Segoe UI Variable',
+    'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, monospace;
+
+  --font-size-xs:   0.75rem;
+  --font-size-sm:   0.875rem;
+  --font-size-base: 1rem;
+  --font-size-md:   1.125rem;
+  --font-size-lg:   1.25rem;
+  --font-size-xl:   1.5rem;
+  --font-size-2xl:  2rem;
+  --font-size-3xl:  2.5rem;
+  --font-size-4xl:  3.5rem;
+  --font-size-5xl:  5rem;
+
+  --weight-medium: 600;
+  --weight-bold:   700;
+  --weight-black:  800;
+
+  --tracking-tight: -0.02em;
+  --tracking-wide:  0.08em;
+
+  /* ── Espaciado (escala de 4) ───────────────────────────── */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* Objetivo táctil / navegable con control remoto */
+  --tap-target: 48px;
+
+  /* ── Movimiento ────────────────────────────────────────── */
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --transition-fast: 140ms var(--ease-out);
+  --transition-base: 240ms var(--ease-out);
+  --transition-slow: 420ms var(--ease-spring);
+
+  /* ── Capas ─────────────────────────────────────────────── */
+  --z-base:    1;
+  --z-panel:   10;
+  --z-overlay: 100;
+  --z-modal:   200;
+  --z-toast:   300;
+}
+
+/* ── Tema oscuro ───────────────────────────────────────────
+   Se aplica con data-theme="dark" o, si el usuario no eligió
+   tema manualmente, siguiendo al sistema.
+   ─────────────────────────────────────────────────────────── */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --color-primary:       var(--violet-400);
+  --color-primary-hover: var(--violet-300);
+  --color-primary-dark:  var(--violet-600);
+  --color-primary-light: var(--violet-300);
+  --color-primary-soft:  rgba(108, 99, 255, 0.16);
+  --color-on-primary:    #0B0B18;
+
+  --color-accent-soft:  rgba(255, 107, 107, 0.16);
+  --color-success:      #34C88E;
+  --color-success-text: #56D6A4;
+  --color-success-soft: rgba(23, 166, 115, 0.18);
+  --color-warning:      #F5B342;
+  --color-warning-text: #F7C86E;
+  --color-warning-soft: rgba(240, 160, 32, 0.18);
+
+  --bg-app:      #0B0B18;
+  --bg-app-tint: radial-gradient(
+      1200px 600px at 15% -10%, rgba(108, 99, 255, 0.22), transparent 60%
+    ),
+    radial-gradient(900px 500px at 100% 0%, rgba(255, 107, 107, 0.14), transparent 55%);
+  --bg-card:   #15162A;
+  --bg-panel:  #1B1C33;
+  --bg-sunken: #101124;
+  --bg-overlay: rgba(5, 5, 14, 0.68);
+  --bg-glass: rgba(21, 22, 42, 0.78);
+
+  --text-primary:   #F3F3FB;
+  --text-secondary: #BCBEDC;
+  --text-muted:     #9093B6;
+
+  --border-color:  #2B2D4B;
+  --border-strong: #3D4066;
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.55);
+  --shadow-xl: 0 30px 70px rgba(0, 0, 0, 0.6);
+  --shadow-primary: 0 10px 26px rgba(108, 99, 255, 0.45);
+  --shadow-inset: inset 0 2px 4px rgba(0, 0, 0, 0.35);
+
+  --gradient-hero: linear-gradient(165deg, #101124 0%, #191330 48%, #101B2B 100%);
+
+  --ring-color: var(--violet-300);
+  --ring-contrast: #0B0B18;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+
+    --color-primary:       var(--violet-400);
+    --color-primary-hover: var(--violet-300);
+    --color-primary-dark:  var(--violet-600);
+    --color-primary-light: var(--violet-300);
+    --color-primary-soft:  rgba(108, 99, 255, 0.16);
+    --color-on-primary:    #0B0B18;
+
+    --color-accent-soft:  rgba(255, 107, 107, 0.16);
+    --color-success:      #34C88E;
+    --color-success-text: #56D6A4;
+    --color-success-soft: rgba(23, 166, 115, 0.18);
+    --color-warning:      #F5B342;
+    --color-warning-text: #F7C86E;
+    --color-warning-soft: rgba(240, 160, 32, 0.18);
+
+    --bg-app:      #0B0B18;
+    --bg-app-tint: radial-gradient(
+        1200px 600px at 15% -10%, rgba(108, 99, 255, 0.22), transparent 60%
+      ),
+      radial-gradient(900px 500px at 100% 0%, rgba(255, 107, 107, 0.14), transparent 55%);
+    --bg-card:   #15162A;
+    --bg-panel:  #1B1C33;
+    --bg-sunken: #101124;
+    --bg-overlay: rgba(5, 5, 14, 0.68);
+    --bg-glass: rgba(21, 22, 42, 0.78);
+
+    --text-primary:   #F3F3FB;
+    --text-secondary: #BCBEDC;
+    --text-muted:     #9093B6;
+
+    --border-color:  #2B2D4B;
+    --border-strong: #3D4066;
+
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.45);
+    --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.55);
+    --shadow-xl: 0 30px 70px rgba(0, 0, 0, 0.6);
+    --shadow-primary: 0 10px 26px rgba(108, 99, 255, 0.45);
+    --shadow-inset: inset 0 2px 4px rgba(0, 0, 0, 0.35);
+
+    --gradient-hero: linear-gradient(165deg, #101124 0%, #191330 48%, #101B2B 100%);
+
+    --ring-color: var(--violet-300);
+    --ring-contrast: #0B0B18;
+  }
+}

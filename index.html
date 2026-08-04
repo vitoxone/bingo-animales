@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="Bingo de Animales - Juego educativo para niños" />
+    <meta name="theme-color" content="#F3F4FC" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Bingo de Animales</title>
+    <style>
+      /* Estilos mínimos previos al bundle: evitan el destello blanco
+         al recargar en tema oscuro. Los tokens reales viven en
+         src/styles/variables.css. */
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html { background: #f3f4fc; }
+      body {
+        font-family: 'Nunito', ui-rounded, 'Segoe UI', system-ui, sans-serif;
+        background: #f3f4fc;
+        color: #14142b;
+      }
+      #root { width: 100%; min-height: 100vh; }
+      @media (prefers-color-scheme: dark) {
+        html:not([data-theme='light']),
+        html:not([data-theme='light']) body { background: #0b0b18; color: #f3f3fb; }
+      }
+      html[data-theme='dark'],
+      html[data-theme='dark'] body { background: #0b0b18; color: #f3f3fb; }
+    </style>
+    <script>
+      // El tema elegido se aplica antes del primer pintado; si no, la
+      // app arrancaría en claro y saltaría a oscuro al hidratar.
+      try {
+        var s = JSON.parse(localStorage.getItem('bingo_animales_settings') || '{}');
+        if (s.theme === 'dark' || s.theme === 'light') {
+          document.documentElement.setAttribute('data-theme', s.theme);
+        }
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

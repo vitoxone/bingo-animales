@@ -1,0 +1,71 @@
+.shell {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  /* Hereda la altura exacta de #root; el scroll vive dentro de cada página */
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* Contenedor animado entre páginas.
+   Antes usaba `display: contents`, que impide animar opacity/transform:
+   la transición existía en el código pero no se veía. */
+.pageWrap {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.loader {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  color: var(--text-muted);
+}
+
+.loaderDots {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.loaderDot {
+  width: 12px;
+  height: 12px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  animation: bounce 1.2s var(--ease-out) infinite;
+}
+
+.loaderDot:nth-child(2) {
+  animation-delay: 0.15s;
+  background: var(--color-accent);
+}
+
+.loaderDot:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.loaderText {
+  font-size: var(--font-size-sm);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+@keyframes bounce {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-10px);
+    opacity: 1;
+  }
+}

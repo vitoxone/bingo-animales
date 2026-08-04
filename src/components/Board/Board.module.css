@@ -1,0 +1,257 @@
+.board {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}
+
+.stage {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Barra de estado (progreso + acceso al panel) ───────── */
+.statusBar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-6);
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.statusProgress {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Abre el panel lateral cuando este se convierte en cajón (móvil) */
+.panelBtn {
+  display: none;
+  align-items: center;
+  gap: var(--space-2);
+  height: 40px;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-full);
+  background: var(--bg-panel);
+  border: var(--border-width) solid var(--border-color);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--weight-bold);
+  flex-shrink: 0;
+}
+
+.panelBtnCount {
+  min-width: 22px;
+  padding: 0 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--weight-black);
+  line-height: 22px;
+  text-align: center;
+}
+
+/* ── Escenario central ──────────────────────────────────── */
+.center {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── Pantalla de inicio ─────────────────────────────────── */
+.idleScreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-5);
+  padding: var(--space-8) var(--space-6);
+  text-align: center;
+  max-width: 40rem;
+}
+
+.idleIcon {
+  font-size: clamp(64px, 12vh, 104px);
+  line-height: 1;
+  filter: drop-shadow(0 12px 28px rgba(108, 99, 255, 0.35));
+  animation: idleFloat 4s var(--ease-out) infinite;
+}
+
+@keyframes idleFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.idleTitle {
+  font-size: clamp(1.75rem, 5vw, 2.75rem);
+  font-weight: var(--weight-black);
+  color: var(--text-primary);
+}
+
+.idleSubtitle {
+  font-size: var(--font-size-md);
+  color: var(--text-secondary);
+  max-width: 30rem;
+  line-height: 1.55;
+}
+
+.idleMeta {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  font-size: var(--font-size-sm);
+  font-weight: var(--weight-bold);
+  color: var(--text-secondary);
+}
+
+.chip svg {
+  color: var(--color-primary);
+}
+
+.startBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-10);
+  background: var(--gradient-primary);
+  color: #fff;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-lg);
+  font-weight: var(--weight-black);
+  letter-spacing: var(--tracking-tight);
+  box-shadow: var(--shadow-primary);
+  min-height: 64px;
+  margin-top: var(--space-2);
+}
+
+@media (hover: hover) {
+  .startBtn:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 18px 38px rgba(108, 99, 255, 0.45);
+  }
+}
+
+/* ── Overlay de pausa ───────────────────────────────────── */
+.pausedOverlay {
+  position: absolute;
+  inset: 0;
+  background: var(--bg-overlay);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  z-index: var(--z-overlay);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: var(--space-6);
+  text-align: center;
+}
+
+.pausedBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 88px;
+  height: 88px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.14);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  margin-bottom: var(--space-2);
+}
+
+.pausedTitle {
+  font-size: clamp(2rem, 6vw, 3rem);
+  font-weight: var(--weight-black);
+  color: #fff;
+  line-height: 1.05;
+}
+
+.pausedSubtitle {
+  font-size: var(--font-size-md);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.pausedBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  padding: var(--space-4) var(--space-8);
+  background: #fff;
+  color: var(--violet-600);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-md);
+  font-weight: var(--weight-black);
+  box-shadow: var(--shadow-lg);
+  min-height: 56px;
+}
+
+@media (hover: hover) {
+  .pausedBtn:hover {
+    transform: scale(1.04);
+  }
+}
+
+.pausedBtn:focus-visible {
+  outline-color: #fff;
+  box-shadow: 0 0 0 7px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-height: 760px) {
+  .statusBar {
+    padding-block: var(--space-2);
+  }
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .main {
+    /* El panel pasa a ser un cajón superpuesto */
+    flex-direction: column;
+  }
+  .panelBtn {
+    display: inline-flex;
+  }
+  .statusBar {
+    padding: var(--space-2) var(--space-4);
+  }
+}

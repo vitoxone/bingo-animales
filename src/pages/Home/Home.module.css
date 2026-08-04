@@ -1,0 +1,349 @@
+.page {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* `safe` evita el clásico recorte superior al centrar contenido
+     que desborda un contenedor con scroll */
+  justify-content: safe center;
+  gap: clamp(var(--space-6), 4vh, var(--space-10));
+  padding: clamp(var(--space-6), 5vh, var(--space-12)) var(--space-6);
+  padding-bottom: max(var(--space-8), env(safe-area-inset-bottom));
+  background: var(--gradient-hero);
+}
+
+/* ── Hero ───────────────────────────────────────────────── */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  text-align: center;
+  max-width: 46rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-4);
+  border-radius: var(--radius-full);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-xs);
+  font-size: var(--font-size-xs);
+  font-weight: var(--weight-bold);
+  color: var(--text-secondary);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.badgeDot {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radius-full);
+  background: var(--color-success);
+  box-shadow: 0 0 0 3px var(--color-success-soft);
+}
+
+.heroLogo {
+  width: clamp(88px, 14vh, 124px);
+  aspect-ratio: 1;
+  background: var(--gradient-brand);
+  border-radius: var(--radius-2xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(44px, 7vh, 62px);
+  line-height: 1;
+  box-shadow: var(--shadow-xl), inset 0 -6px 16px rgba(0, 0, 0, 0.14);
+  animation: float 4.5s var(--ease-out) infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(3deg);
+  }
+}
+
+.heroTitle {
+  font-size: clamp(2.25rem, 7vw, 4.25rem);
+  font-weight: var(--weight-black);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* Sin esto, en Safari el texto queda recortado por los descendentes */
+  padding-bottom: 0.08em;
+}
+
+.heroSubtitle {
+  font-size: var(--font-size-md);
+  color: var(--text-secondary);
+  max-width: 34rem;
+  line-height: 1.6;
+}
+
+/* ── Carrusel de animales ───────────────────────────────── */
+.strip {
+  width: 100%;
+  max-width: 62rem;
+  overflow: hidden;
+  /* Difumina los extremos en vez de cortarlos en seco */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.stripTrack {
+  display: flex;
+  gap: var(--space-3);
+  width: max-content;
+  animation: marquee 42s linear infinite;
+  /* Capa propia: sin esto, la máscara + animación dejaba restos de
+     tarjetas pintados fuera del carrusel al cambiar de página. */
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+@media (hover: hover) {
+  .strip:hover .stripTrack {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* -50% = exactamente una copia de la lista */
+    transform: translateX(-50%);
+  }
+}
+
+.stripCard {
+  width: clamp(64px, 8vw, 88px);
+  aspect-ratio: 1;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+  border: 2px solid var(--border-color);
+  transition: transform var(--transition-slow), box-shadow var(--transition-base);
+}
+
+.stripCard svg {
+  width: 100%;
+  height: 100%;
+}
+
+@media (hover: hover) {
+  .stripCard:hover {
+    transform: translateY(-6px) scale(1.08) rotate(-2deg);
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+/* ── Acciones ───────────────────────────────────────────── */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 26rem;
+}
+
+.btnPrimary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  min-height: 64px;
+  padding: var(--space-4) var(--space-8);
+  background: var(--gradient-primary);
+  color: #fff;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-lg);
+  font-weight: var(--weight-black);
+  letter-spacing: var(--tracking-tight);
+  box-shadow: var(--shadow-primary);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Brillo que cruza el botón: llama la atención sin ser un parpadeo */
+.btnPrimary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  animation: sheen 4.5s ease-in-out infinite;
+}
+
+@keyframes sheen {
+  0%,
+  60% {
+    left: -60%;
+  }
+  100% {
+    left: 130%;
+  }
+}
+
+@media (hover: hover) {
+  .btnPrimary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 34px rgba(108, 99, 255, 0.45);
+  }
+}
+
+.btnSecondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  min-height: 56px;
+  padding: var(--space-3) var(--space-6);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-base);
+  font-weight: var(--weight-bold);
+  box-shadow: var(--shadow-xs);
+}
+
+@media (hover: hover) {
+  .btnSecondary:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+}
+
+/* ── Características ────────────────────────────────────── */
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 56rem;
+}
+
+.featureCard {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  text-align: center;
+  box-shadow: var(--shadow-xs);
+  transition: transform var(--transition-base), box-shadow var(--transition-base),
+    border-color var(--transition-base);
+}
+
+@media (hover: hover) {
+  .featureCard:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-primary-light);
+    box-shadow: var(--shadow-md);
+  }
+}
+
+.featureIcon {
+  font-size: 28px;
+  line-height: 1;
+  margin-bottom: var(--space-1);
+}
+
+.featureTitle {
+  font-size: var(--font-size-base);
+  font-weight: var(--weight-black);
+  color: var(--text-primary);
+}
+
+.featureDesc {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+/* ── Atajos de teclado (visibles solo en pantallas grandes) ── */
+.shortcuts {
+  display: none;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  justify-content: center;
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+
+@media (min-width: 900px) {
+  .shortcuts {
+    display: flex;
+  }
+}
+
+.shortcut {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.shortcut kbd {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: var(--weight-bold);
+  color: var(--text-secondary);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-bottom-width: 2px;
+  border-radius: var(--radius-xs);
+  padding: 2px 7px;
+}
+
+/* ── Créditos ───────────────────────────────────────────── */
+.credits {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.credits a {
+  color: var(--text-secondary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+@media (hover: hover) {
+  .credits a:hover {
+    color: var(--color-primary);
+  }
+}
+
+/* ── Menos movimiento ───────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .stripTrack,
+  .heroLogo,
+  .btnPrimary::after {
+    animation: none;
+  }
+}

@@ -1,0 +1,193 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* ── Resumen de progreso ────────────────────────────────── */
+.summary {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  box-shadow: var(--shadow-xs);
+}
+
+.summaryTop {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.summaryValue {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--weight-black);
+  color: var(--text-primary);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.summaryValue small {
+  font-size: var(--font-size-md);
+  color: var(--text-muted);
+  font-weight: var(--weight-bold);
+}
+
+.summaryLabel {
+  font-size: var(--font-size-xs);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ── Último sorteado ────────────────────────────────────── */
+.latest {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  border: 2px solid var(--animal-color, var(--color-primary));
+  box-shadow: var(--shadow-sm);
+}
+
+.latestThumb {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--bg-panel);
+}
+
+.latestThumb svg {
+  width: 100%;
+  height: 100%;
+}
+
+.latestText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.latestLabel {
+  font-size: var(--font-size-xs);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.latestName {
+  font-size: var(--font-size-lg);
+  font-weight: var(--weight-black);
+  color: var(--text-primary);
+  letter-spacing: var(--tracking-tight);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Secciones ──────────────────────────────────────────── */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-1) var(--space-2);
+  /* Se queda fijo mientras se recorre la lista */
+  position: sticky;
+  top: calc(-1 * var(--space-3));
+  background: var(--bg-panel);
+  z-index: 1;
+}
+
+.sectionTitle {
+  font-size: var(--font-size-xs);
+  font-weight: var(--weight-black);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.badge {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--weight-black);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-full);
+  min-width: 24px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.badge.pending {
+  background: var(--color-warning);
+  color: #3B2400;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+  gap: var(--space-2);
+}
+
+.headerActions {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.revealBtn {
+  padding: 3px var(--space-3);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--weight-bold);
+}
+
+@media (hover: hover) {
+  .revealBtn:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+}
+
+.emptyMsg,
+.hiddenMsg {
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+  text-align: center;
+  padding: var(--space-5) var(--space-3);
+  border: 1px dashed var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+}
+
+.hiddenMsg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-weight: var(--weight-medium);
+}
+
+.hiddenMsg svg {
+  color: var(--color-warning);
+}
