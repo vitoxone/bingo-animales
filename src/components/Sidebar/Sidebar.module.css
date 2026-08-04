@@ -26,6 +26,7 @@
   padding: var(--space-1);
   background: var(--bg-sunken);
   border-radius: var(--radius-full);
+  min-width: 0;
 }
 
 .tab {
@@ -70,91 +71,116 @@
   }
 }
 
-/* Cerrar: solo existe en modo cajón */
-.closeBtn {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-full);
-  background: var(--bg-sunken);
-  color: var(--text-secondary);
-  font-size: 20px;
-  line-height: 1;
-  flex-shrink: 0;
-}
-
 /* ── Contenido ──────────────────────────────────────────── */
 .content {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
   padding: var(--space-3);
-  scrollbar-gutter: stable;
 }
 
-/* ── Fondo del cajón (solo móvil) ───────────────────────── */
-.backdrop {
-  display: none;
+/* ══ Modo cajón (móvil) ══════════════════════════════════════
+   Se monta en <body> mediante un portal, así que aquí manda un
+   único contexto de apilamiento y nada de fuera puede taparlo. */
+.drawerRoot {
   position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  /* Cerrado: ni se ve ni intercepta toques */
+  pointer-events: none;
+  visibility: hidden;
+  transition: visibility 0s linear 400ms;
+}
+
+.drawerRoot.open {
+  pointer-events: auto;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.backdrop {
+  position: absolute;
   inset: 0;
   background: var(--bg-overlay);
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
-  z-index: var(--z-overlay);
-  border: none;
-  width: 100%;
+  opacity: 0;
+  transition: opacity var(--transition-base);
 }
 
-/* ── Modo cajón ─────────────────────────────────────────── */
-@media (max-width: 900px) {
-  .sidebar {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100%;
-    height: min(80vh, 34rem);
-    z-index: calc(var(--z-overlay) + 1);
-    border-left: none;
-    border-top: 1px solid var(--border-color);
-    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-    box-shadow: var(--shadow-xl);
-    transform: translateY(102%);
-    transition: transform var(--transition-slow);
-    padding-bottom: env(safe-area-inset-bottom);
-  }
+.drawerRoot.open .backdrop {
+  opacity: 1;
+}
 
-  .sidebar.open {
-    transform: translateY(0);
-  }
+.drawer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: min(80vh, 34rem);
+  height: min(80svh, 34rem);
+  border-left: none;
+  border-top: 1px solid var(--border-color);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  box-shadow: var(--shadow-xl);
+  transform: translateY(101%);
+  transition: transform var(--transition-slow);
+  padding-bottom: env(safe-area-inset-bottom);
+}
 
-  .closeBtn {
-    display: inline-flex;
-  }
+.drawerRoot.open .drawer {
+  transform: translateY(0);
+}
 
+/* Asa visual del cajón */
+.drawer .head {
+  position: relative;
+  padding-top: var(--space-5);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+.drawer .head::before {
+  content: '';
+  position: absolute;
+  top: 7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 44px;
+  height: 4px;
+  border-radius: var(--radius-full);
+  background: var(--border-strong);
+}
+
+/* Cerrar: por encima de todo lo del cajón y con área táctil completa */
+.closeBtn {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: var(--radius-full);
+  background: var(--bg-sunken);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+}
+
+@media (hover: hover) {
+  .closeBtn:hover {
+    background: var(--color-accent-soft);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drawer,
   .backdrop {
-    display: block;
-  }
-
-  /* Asa visual del cajón */
-  .head::before {
-    content: '';
-    position: absolute;
-    top: 6px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 44px;
-    height: 4px;
-    border-radius: var(--radius-full);
-    background: var(--border-strong);
-  }
-
-  .head {
-    position: relative;
-    padding-top: var(--space-4);
-    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    transition: none;
   }
 }

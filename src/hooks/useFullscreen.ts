@@ -1,5 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
-import { enterFullscreen, exitFullscreen, isFullscreen } from '../utils/fullscreen';
+import {
+  enterFullscreen,
+  exitFullscreen,
+  isFullscreen,
+  isFullscreenSupported,
+} from '../utils/fullscreen';
 
 export function useFullscreen() {
   const [fullscreen, setFullscreen] = useState(false);
@@ -34,5 +39,5 @@ export function useFullscreen() {
     }
   }, []);
 
-  return { fullscreen, toggle, enter };
+  return { fullscreen, toggle, enter, supported: isFullscreenSupported() };
 }

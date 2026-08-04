@@ -1,3 +1,27 @@
+type FsElement = HTMLElement & { webkitRequestFullscreen?: () => Promise<void> };
+type FsDocument = Document & {
+  webkitExitFullscreen?: () => Promise<void>;
+  webkitFullscreenElement?: Element;
+  webkitFullscreenEnabled?: boolean;
+};
+
+/**
+ * Si el navegador puede poner el documento a pantalla completa.
+ *
+ * Safari en iPhone no implementa la Fullscreen API fuera de <video>: sin esta
+ * comprobación el botón existía pero no hacía absolutamente nada.
+ */
+export function isFullscreenSupported(): boolean {
+  try {
+    const el = document.documentElement as FsElement;
+    const doc = document as FsDocument;
+    const enabled = document.fullscreenEnabled ?? doc.webkitFullscreenEnabled ?? false;
+    return Boolean(enabled && (el.requestFullscreen || el.webkitRequestFullscreen));
+  } catch {
+    return false;
+  }
+}
+
 /** Enter fullscreen on the document element. */
 export async function enterFullscreen(): Promise<void> {
   const el = document.documentElement;

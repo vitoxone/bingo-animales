@@ -25,8 +25,11 @@ body {
   background: var(--bg-app);
   color: var(--text-primary);
   line-height: 1.5;
+  /* svh = alto con las barras del navegador visibles. Con vh (o dvh) el
+     layout mide más que el área visible en Safari de iPhone y los controles
+     quedaban fuera de la pantalla. */
   height: 100vh;
-  height: 100dvh;
+  height: 100svh;
   overflow: hidden;
   overscroll-behavior-y: none;
   font-synthesis-weight: none;
@@ -65,7 +68,7 @@ select {
   position: relative;
   z-index: var(--z-base);
   height: 100vh;
-  height: 100dvh;
+  height: 100svh;
   overflow: hidden;
   display: flex;
   flex-direction: column;

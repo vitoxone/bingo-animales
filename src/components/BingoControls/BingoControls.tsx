@@ -55,7 +55,7 @@ export function BingoControls({
   canGoPrev,
   mode,
 }: BingoControlsProps) {
-  const { fullscreen, toggle } = useFullscreen();
+  const { fullscreen, toggle, supported: fullscreenSupported } = useFullscreen();
 
   const isIdle = phase === 'idle';
   const isShowing = phase === 'showing';
@@ -125,13 +125,15 @@ export function BingoControls({
           />
         )}
 
-        {/* Pantalla completa */}
-        <Action
-          icon={fullscreen ? 'collapse' : 'expand'}
-          label={fullscreen ? 'Ventana' : 'Completa'}
-          onClick={toggle}
-          title={fullscreen ? 'Salir de pantalla completa (f)' : 'Pantalla completa (f)'}
-        />
+        {/* Pantalla completa (no existe en Safari de iPhone) */}
+        {fullscreenSupported && (
+          <Action
+            icon={fullscreen ? 'collapse' : 'expand'}
+            label={fullscreen ? 'Ventana' : 'Completa'}
+            onClick={toggle}
+            title={fullscreen ? 'Salir de pantalla completa (f)' : 'Pantalla completa (f)'}
+          />
+        )}
       </div>
 
       {/* Atajos de teclado / control remoto */}

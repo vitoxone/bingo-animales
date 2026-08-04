@@ -3,11 +3,13 @@ import { AnimatePresence, motion } from 'framer-motion';
 import styles from './Settings.module.css';
 import { Icon } from '../Icon/Icon';
 import { useSettings } from '../../context/SettingsContext';
+import { isFullscreenSupported } from '../../utils/fullscreen';
 import type { CountdownSeconds, ShowingSeconds, GameMode, Theme } from '../../types';
 
 export function Settings() {
   const { settings, updateSettings } = useSettings();
   const [saved, setSaved] = useState(false);
+  const fullscreenSupported = isFullscreenSupported();
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   function set<K extends keyof typeof settings>(key: K, value: (typeof settings)[K]) {
@@ -141,11 +143,13 @@ export function Settings() {
           value={settings.soundEnabled}
           onChange={(v) => set('soundEnabled', v)}
         />
-        <Toggle
-          label="Pantalla completa automática"
-          value={settings.autoFullscreen}
-          onChange={(v) => set('autoFullscreen', v)}
-        />
+        {fullscreenSupported && (
+          <Toggle
+            label="Pantalla completa automática"
+            value={settings.autoFullscreen}
+            onChange={(v) => set('autoFullscreen', v)}
+          />
+        )}
       </div>
 
       <AnimatePresence>

@@ -42,6 +42,18 @@
   min-height: 0;
 }
 
+/* En móvil la tarjeta se pega a los bordes: cada píxel cuenta */
+@media (max-width: 560px) {
+  .card {
+    padding: var(--space-2);
+    border-width: 2px;
+    border-radius: var(--radius-xl);
+  }
+  .nameWrapper {
+    padding: var(--space-1) var(--space-4);
+  }
+}
+
 /* ── Ilustración ────────────────────────────────────────── */
 .svgWrapper {
   /* Toma el alto sobrante y deriva el ancho: siempre cuadrada */
@@ -51,8 +63,8 @@
   max-width: 100%;
   border-radius: var(--radius-xl);
   overflow: hidden;
-  background: var(--bg-panel);
-  box-shadow: inset 0 0 0 2px var(--border-color);
+  /* Sin fondo ni marco propios: la ilustración ya trae el suyo y se veía
+     una tarjeta dentro de otra. */
 }
 
 .svgWrapper svg {
