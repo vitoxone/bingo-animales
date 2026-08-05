@@ -27,10 +27,13 @@ body {
   line-height: 1.5;
   /* --app-height lo publica useAppHeight() con el alto real de la ventana.
      Ni vh ni svh coinciden con el área visible en Safari de iPhone, y los
-     controles acababan debajo de la barra del navegador. */
+     controles acababan debajo de la barra del navegador.
+     El min() es la red de seguridad: si la medición se toma con las barras
+     de Safari plegadas, --app-height sale más grande que lo visible y la
+     botonera vuelve a esconderse. 100svh nunca supera el área visible. */
   height: 100vh;
   height: 100svh;
-  height: var(--app-height, 100svh);
+  height: min(100svh, var(--app-height, 100svh));
   overflow: hidden;
   overscroll-behavior-y: none;
   font-synthesis-weight: none;
@@ -70,7 +73,7 @@ select {
   z-index: var(--z-base);
   height: 100vh;
   height: 100svh;
-  height: var(--app-height, 100svh);
+  height: min(100svh, var(--app-height, 100svh));
   overflow: hidden;
   display: flex;
   flex-direction: column;
