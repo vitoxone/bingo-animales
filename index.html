@@ -31,7 +31,11 @@
         background: #f3f4fc;
         color: #14142b;
       }
-      #root { width: 100%; min-height: 100vh; }
+      /* Sin min-height: `100vh` es el viewport GRANDE en Safari de iPhone
+         (con las barras plegadas) y, al ganar min-height sobre height,
+         estiraba #root por debajo del área visible: la botonera quedaba
+         detrás de la barra del navegador. El alto real lo fija globals.css. */
+      #root { width: 100%; }
       @media (prefers-color-scheme: dark) {
         html:not([data-theme='light']),
         html:not([data-theme='light']) body { background: #0b0b18; color: #f3f3fb; }
